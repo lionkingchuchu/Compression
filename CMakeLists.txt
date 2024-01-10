@@ -7,7 +7,7 @@ project(
   LANGUAGES CXX)
 
 #add_subdirectory(lib)
-add_executable (CompressionProject main.cpp)
+add_executable (CompressionProject main.cpp function.h function.cpp)
 
 target_include_directories(CompressionProject PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_link_libraries(CompressionProject PUBLIC ${CMAKE_SOURCE_DIR}/lib/OpenNI2.lib)
