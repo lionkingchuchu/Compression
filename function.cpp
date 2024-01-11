@@ -34,20 +34,20 @@ void decode_fast(Mat compimg, Mat output, int range, int* ROI, double* Enstr, Ma
     double mink = 99999, maxk = -99999;
     double phHF, phLF, uph, k;
     double i1, i2, i3;
-    int z;
+    double z;
 
     for (int i = 0; i < height; i++) {
         uchar* pc = compimg.ptr<uchar>(i);
         double* pv = vismat.ptr<double>(i);
-        ushort* po = output.ptr<ushort>(i);
+        double* po = output.ptr<double>(i);
 
         for (int j = 0; j < width; j++) { // Decode from pre-calculated Nstr (Enstr)
-            i1 = (*pc++)/255., i2 = (*pc++)/255., i3 = (*pc++)/255.;
-            phHF = std::atan2(i1-0.5, i2-0.5);
-            phLF = i3 * 2 * pi_;
-            k = round(((phLF * Enstr[i * width + j] - phHF)) / (2 * pi_));
-            uph = phHF + 2 * pi_ * (k);
-            z = int(uph * range / (2 * pi_ * Enstr[i * width + j]));
+            i1 = (double)*pc++ / 255., i2 = (double)*pc++ / 255., i3 = (double)*pc++ / 255.;
+            phHF = atan2(i1-0.5, i2-0.5);
+            phLF = i3 * 2. * pi_;
+            k = round(((phLF * Enstr[i * width + j] - phHF)) / (2. * pi_));
+            uph = phHF + 2. * pi_ * (k);
+            z = uph * (double)range / (2. * pi_ * Enstr[i * width + j]);
             *po++ = z;
             //*pv++ =  // visualize internal data
         }
@@ -58,8 +58,7 @@ void decode(Mat compimg, Mat output, int range, int* ROI, double* Enstr, Mat vis
     int NMIN = 1, NMAX = 18, SIGMA = 50, ROI_x = ROI[0], ROI_y = ROI[1];
     double phHF, phLF, uph, k;
     double ALPHA = 1.05, BETA = 5, maxE = 0;
-    double i1, i2, i3;
-    int z;
+    double i1, i2, i3, z;
 
     for (int i = 0; i < height; i++) { // Calculate E
         for (int j = 0; j < width; j++) {
@@ -77,15 +76,15 @@ void decode(Mat compimg, Mat output, int range, int* ROI, double* Enstr, Mat vis
     for (int i = 0; i < height; i++) {
         uchar* pc = compimg.ptr<uchar>(i);
         double* pv = vismat.ptr<double>(i);
-        ushort* po = output.ptr<ushort>(i);
+        double* po = output.ptr<double>(i);
 
         for (int j = 0; j < width; j++) { // Decode from pre-calculated Nstr (Enstr)
-            i1 = (*pc++)/255., i2 = (*pc++)/255., i3 = (*pc++)/255.;
-            phHF = std::atan2(i1-0.5, i2-0.5);
-            phLF = i3 * 2 * pi_;
-            k = round(((phLF * Enstr[i * width + j] - phHF)) / (2 * pi_));
-            uph = phHF + 2 * pi_ * (k);
-            z = int(uph * range / (2 * pi_ * Enstr[i * width + j]));
+            i1 = (double)*pc++ / 255., i2 = (double)*pc++ / 255., i3 = (double)*pc++ / 255.;
+            phHF = atan2(i1-0.5, i2-0.5);
+            phLF = i3 * 2. * pi_;
+            k = round(((phLF * Enstr[i * width + j] - phHF)) / (2. * pi_));
+            uph = phHF + 2. * pi_ * (k);
+            z = uph * (double)range / (2. * pi_ * Enstr[i * width + j]);
             *po++ = z;
             //*pv++ =  // visualize internal data
         }
@@ -127,10 +126,10 @@ void show_error(Mat vismat, Mat depthmat, Mat reconmat, double *maxError) {
     for (int i = 0; i < height; i++) { //Enstr Normalize
         double* pv = vismat.ptr<double>(i);
         ushort* pd = depthmat.ptr<ushort>(i);
-        ushort* pr = reconmat.ptr<ushort>(i);
+        double* pr = reconmat.ptr<double>(i);
 
         for (int j = 0; j < width; j++) {
-            *pv = (double)(*pd++ - *pr++);
+            *pv = (double)*pd++ - *pr++;
             *maxError = max(*maxError, *pv++);
         }
     }

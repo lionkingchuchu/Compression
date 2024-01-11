@@ -69,7 +69,7 @@ int main(int argc, char** argv)
     Mat rawdepth(480, 640, CV_16UC1);
     Mat depthimg(480, 640, CV_8UC1);
     Mat compimg(480, 640, CV_8UC3);
-    Mat recondepth(480, 640, CV_16UC1);
+    Mat recondepth(480, 640, CV_64FC1);
     Mat errormap(480, 640, CV_64FC1);
 
     while (!wasKeyboardHit())
@@ -130,7 +130,6 @@ int main(int argc, char** argv)
         //show_Enstr(errormap, Enstr);
         //normalize_map(errormap); // visualize internal data
         ///////////////////
-        
 
         String s = "maxerror: ";
         s.append(std::to_string(maxerror));
