@@ -14,6 +14,7 @@ using namespace openni;
 using namespace cv;
 
 void encode(Mat input, DepthPixel* ref, int* ROI, int maxz, int minz, double* Enstr);
+void decode_fast(Mat compimg, Mat output, int range, int* ROI, double* Enstr, Mat vismat);
 void decode(Mat compimg, Mat output, int range, int* ROI, double* Enstr, Mat vismat);
 void show_Enstr(Mat vismat, double *Enstr);
 void normalize_map(Mat vismat);

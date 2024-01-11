@@ -66,14 +66,11 @@ int main(int argc, char** argv)
     }
     
     VideoFrameRef frame;
-
-
     Mat rawdepth(480, 640, CV_16UC1);
     Mat depthimg(480, 640, CV_8UC1);
     Mat compimg(480, 640, CV_8UC3);
     Mat recondepth(480, 640, CV_16UC1);
     Mat errormap(480, 640, CV_64FC1);
-
 
     while (!wasKeyboardHit())
     {
@@ -115,7 +112,6 @@ int main(int argc, char** argv)
             if (pDepth[i] < mindepth) mindepth = pDepth[i];
         }
 
-
         for (int i = 0; i < height; i++) { // Depth -> Grayscale Img in depthimg
             ushort* p = rawdepth.ptr<ushort>(i);
             uchar* p_ = depthimg.ptr<uchar>(i);
@@ -126,7 +122,7 @@ int main(int argc, char** argv)
         }
 
         encode(compimg, pDepth, ROI, maxdepth, mindepth, Enstr);
-        decode(compimg, recondepth, maxdepth - mindepth, ROI, Enstr, errormap);
+        decode_fast(compimg, recondepth, maxdepth - mindepth, ROI, Enstr, errormap);
 
         // VISUALIZATION //
         double maxerror = 0;

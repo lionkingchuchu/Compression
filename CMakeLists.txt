@@ -6,7 +6,6 @@ project(
   VERSION 0.1
   LANGUAGES CXX)
 
-#add_subdirectory(lib)
 add_executable (CompressionProject main.cpp function.h function.cpp)
 
 target_include_directories(CompressionProject PUBLIC ${CMAKE_SOURCE_DIR}/include)
